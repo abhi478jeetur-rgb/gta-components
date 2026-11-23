@@ -17,6 +17,9 @@ main{max-width:1200px;margin:0 auto}
 h2{font-size:19px;margin:26px 0 4px} h3{font-size:15px;color:#c8d3df;margin:18px 0 8px}
 .grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(250px,1fr));gap:10px}
 .card{background:#12161d;border:1px solid #232c38;border-radius:12px;padding:12px}
+.card img{width:100%;border-radius:8px;display:block;margin-bottom:8px;background:#14181f;cursor:pointer}
+.card.short img{height:190px;object-fit:cover;object-position:top center}
+.stopbtn{background:#3a2323;color:#f5caca;border:1px solid #5f3232;border-radius:8px;padding:6px 10px;font-size:12px;cursor:pointer;margin-left:10px}
 .card b{font-size:14px;display:block}
 .card p{color:#8b98a8;font-size:12px;margin:5px 0 9px;line-height:1.45;display:-webkit-box;-webkit-line-clamp:3;-webkit-box-orient:vertical;overflow:hidden}
 .btns{display:flex;gap:6px;flex-wrap:wrap}
@@ -29,7 +32,7 @@ button:hover{background:#27374d} .badge{font-size:10px;color:#ffb454;border:1px 
 <input id="search" placeholder="Search — captions, wheel, map, HUD..."/></header>
 <section id="stage"><div id="stageName">Koi component chuno 👇</div><div id="stageJob">Neeche list se kisi component ka 16:9 ya 9:16 button dabao.</div>
 <div id="frameWrap" style="max-width:720px;aspect-ratio:16/9"><iframe id="frame" title="preview"></iframe></div>
-<div id="stageLinks"></div></section>
+<div id="stageLinks"></div><button class="stopbtn" id="stopBtn" style="display:none" onclick="stopPreview()">⏹ Preview band karo (tab halka rahega)</button></section>
 <p class="note">Note: repo me Rockstar footage included nahi hai, isliye kuch components ka background khaali/transparent dikhega — motion graphics (captions, counters, wheels, HUD) waisi hi chalegi jaisi design hai. Apni footage par ye overlays editor me lagte hain.</p>
 <main id="main"></main>
 <script>
@@ -50,18 +53,28 @@ function play(path, ratio, name, job){
   requestAnimationFrame(fit); setTimeout(fit, 300);
   document.getElementById('stageName').textContent=name;
   document.getElementById('stageJob').textContent=job;
+  document.getElementById('stopBtn').style.display='inline-block';
   document.getElementById('stageLinks').innerHTML='<a href="'+path+'" target="_blank" rel="noopener">↗ Naye tab me kholo</a>';
   document.getElementById('stage').scrollIntoView({behavior:'smooth',block:'start'});
 }
+function stopPreview(){
+  frame.src='about:blank'; curSize=null;
+  document.getElementById('stopBtn').style.display='none';
+  document.getElementById('stageName').textContent='Preview band hai';
+  document.getElementById('stageJob').textContent='Tab halka hai. Kisi card ka button dabate hi preview chalega.';
+  document.getElementById('stageLinks').innerHTML='';
+}
 function card(c, kind){
-  const el=document.createElement('div'); el.className='card'; el.dataset.name=(c.name+' '+c.job).toLowerCase();
+  const el=document.createElement('div'); el.className='card'+(kind==='short'?' short':''); el.dataset.name=(c.name+' '+c.job).toLowerCase();
+  const thumb = kind==='long' ? 'thumbs/'+c.dir+'/long-form.jpg' : 'thumbs/'+c.dir+'.jpg';
   let btns='';
   if(kind==='long'){
     btns='<button data-p="'+c.dir+'/long-form/index.html" data-r="16/9">▶ 16:9</button><button data-p="'+c.dir+'/shorts/index.html" data-r="9/16">▶ 9:16</button>';
   } else {
     btns='<button data-p="'+c.dir+'/index.html" data-r="9/16">▶ 9:16</button>';
   }
-  el.innerHTML='<b>'+c.name+(c.three?'<span class="badge">Three.js</span>':'')+'</b><p>'+c.job+'</p><div class="btns">'+btns+'</div>';
+  el.innerHTML='<img loading="lazy" decoding="async" src="'+thumb+'" alt="">'+'<b>'+c.name+(c.three?'<span class="badge">Three.js</span>':'')+'</b><p>'+c.job+'</p><div class="btns">'+btns+'</div>';
+  el.querySelector('img').onclick=()=>{ const b=el.querySelector('button'); if(b) b.click(); };
   el.querySelectorAll('button').forEach(b=>b.onclick=()=>play(b.dataset.p,b.dataset.r,c.name,c.job));
   return el;
 }
@@ -77,6 +90,8 @@ function section(title, items, kind){
 }
 section('Long-form components — 76', DATA.components, 'long');
 section('Shorts-only components — 50', DATA.shorts, 'short');
+function stageTimeline(){ try{ const tls=frame.contentWindow && frame.contentWindow.__timelines; if(!tls) return null; const ks=Object.keys(tls); return ks.length?tls[ks[0]]:null; }catch(e){ return null; } }
+new IntersectionObserver(es=>{ const tl=stageTimeline(); if(!tl) return; es.forEach(en=>{ try{ en.isIntersecting?tl.play():tl.pause(); }catch(e){} }); }, {threshold:0.12}).observe(document.getElementById('stage'));
 document.getElementById('search').addEventListener('input', e=>{
   const q=e.target.value.toLowerCase();
   document.querySelectorAll('.card').forEach(el=>{ el.style.display = el.dataset.name.includes(q)?'':'none'; });
