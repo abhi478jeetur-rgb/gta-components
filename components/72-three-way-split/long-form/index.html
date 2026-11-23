@@ -4,7 +4,7 @@
      and an impact, chrome dividers that drop with overshoot and take a specular pass, lit identity chips (accent spine + name +
      year) stamped in with a spring, a 4.6 s hold, then the winner (GTA VI) takes the frame: a clip-path wipe that pushes the
      dividers and the losing chips off its edge, docks the winner chip and lands with a 3-frame exposure peak.
-     Mechanics in media/split.js + media/split.css (port target: assets/kit/film.{css,js} split3 in films/gta6-rdr2-gta5).
+     Mechanics in media/split.js + media/split.css (port target: ../../../shared/kit/film.{css,js} split3 in films/gta6-rdr2-gta5).
      Full-kind component: footage always shows; bg has no effect. -->
 <html lang="en" data-composition-variables='[
   {"id":"bg","type":"enum","label":"Background","default":"plate","options":[{"value":"plate","label":"Sample footage"},{"value":"none","label":"Sample footage"}]}
@@ -68,5 +68,9 @@
         });
       })();
     </script>
-  </body>
+  <script>
+/* Gallery autoplay: bina HyperFrames runtime ke browser me khule to timeline loop me chalao */
+(function(){if(window.__hyperframes)return;var n=0;var t=setInterval(function(){n++;var tls=window.__timelines;if(tls&&Object.keys(tls).length){clearInterval(t);Object.keys(tls).forEach(function(k){try{tls[k].repeat(-1);tls[k].play(0);}catch(e){}});}if(n>60)clearInterval(t);},150);})();
+</script>
+</body>
 </html>

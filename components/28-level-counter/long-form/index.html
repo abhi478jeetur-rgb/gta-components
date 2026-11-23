@@ -12,10 +12,10 @@
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=1920, height=1080" />
-    <link rel="stylesheet" href="assets/fonts/fonts.css" />
-    <link rel="stylesheet" href="assets/kit/look/look.css" />
+    <link rel="stylesheet" href="../../../shared/fonts/fonts.css" />
+    <link rel="stylesheet" href="../../../shared/kit/look/look.css" />
     <script src="https://cdn.jsdelivr.net/npm/gsap@3.14.2/dist/gsap.min.js"></script>
-    <script src="assets/kit/look/look.js"></script>
+    <script src="../../../shared/kit/look/look.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/three@0.160.0/build/three.min.js"></script>
     <script src="media/glyphs.js"></script>
     <script src="media/lvl3d.js"></script>
@@ -262,5 +262,9 @@
         });
       })();
     </script>
-  </body>
+  <script>
+/* Gallery autoplay: bina HyperFrames runtime ke browser me khule to timeline loop me chalao */
+(function(){if(window.__hyperframes)return;var n=0;var t=setInterval(function(){n++;var tls=window.__timelines;if(tls&&Object.keys(tls).length){clearInterval(t);Object.keys(tls).forEach(function(k){try{tls[k].repeat(-1);tls[k].play(0);}catch(e){}});}if(n>60)clearInterval(t);},150);})();
+</script>
+</body>
 </html>

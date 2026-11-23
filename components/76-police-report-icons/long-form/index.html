@@ -2,7 +2,7 @@
 <!-- GTA-niche 76 Police report icons, variant A (16:9, 1920x1080, 30 fps, 7.5 s).
      Three of our own line icons (OUTFIT, CAMERA, WEAPON) stamp in one by one on the beats as real Three.js lacquer slabs
      (extruded, bevelled, clearcoat navy, pink emissive strokes), then travel to a top band and lock in as THE POLICE REPORT:
-     the witness-evidence object. Film kit object from films/gta6-rdr2-gta5 (assets/kit/film.js `report`), rebuilt with
+     the witness-evidence object. Film kit object from films/gta6-rdr2-gta5 (../../../shared/kit/film.js `report`), rebuilt with
      material, light and a real payoff. Variable bg: "plate" (official GTA VI footage) / "none" (footage hidden). -->
 <html lang="en" data-composition-variables='[
   {"id":"bg","type":"enum","label":"Background","default":"plate","options":[{"value":"plate","label":"Sample footage"},{"value":"none","label":"Transparent"}]}
@@ -10,10 +10,10 @@
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=1920, height=1080" />
-    <link rel="stylesheet" href="assets/fonts/fonts.css" />
-    <link rel="stylesheet" href="assets/kit/look/look.css" />
+    <link rel="stylesheet" href="../../../shared/fonts/fonts.css" />
+    <link rel="stylesheet" href="../../../shared/kit/look/look.css" />
     <script src="https://cdn.jsdelivr.net/npm/gsap@3.14.2/dist/gsap.min.js"></script>
-    <script src="assets/kit/look/look.js"></script>
+    <script src="../../../shared/kit/look/look.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/three@0.160.0/build/three.min.js"></script>
     <style>
       @font-face { font-family: "Oswald"; src: url("media/fonts/oswald-latin.woff2") format("woff2"); font-weight: 200 700; font-display: block; }
@@ -308,5 +308,9 @@
         });
       })();
     </script>
-  </body>
+  <script>
+/* Gallery autoplay: bina HyperFrames runtime ke browser me khule to timeline loop me chalao */
+(function(){if(window.__hyperframes)return;var n=0;var t=setInterval(function(){n++;var tls=window.__timelines;if(tls&&Object.keys(tls).length){clearInterval(t);Object.keys(tls).forEach(function(k){try{tls[k].repeat(-1);tls[k].play(0);}catch(e){}});}if(n>60)clearInterval(t);},150);})();
+</script>
+</body>
 </html>
